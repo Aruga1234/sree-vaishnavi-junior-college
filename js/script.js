@@ -75,6 +75,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             if (
                 window.innerWidth < 992 &&
+                navbar &&
                 navbar.classList.contains("show")
             ) {
 
@@ -101,6 +102,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function toggleBackToTop() {
 
+        if (!backToTop) return;
+
         if (window.scrollY > 500) {
             backToTop.classList.add("show");
         } else {
@@ -111,14 +114,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
     window.addEventListener("scroll", toggleBackToTop);
 
-    backToTop.addEventListener("click", function () {
+    if (backToTop) {
+        backToTop.addEventListener("click", function () {
 
-        window.scrollTo({
-            top: 0,
-            behavior: "smooth"
+            window.scrollTo({
+                top: 0,
+                behavior: "smooth"
+            });
+
         });
-
-    });
+    }
 
 
     /* =====================================================
@@ -325,7 +330,8 @@ document.addEventListener("DOMContentLoaded", function () {
             ".feature-card, " +
             ".process-card, " +
             ".contact-card, " +
-            ".skill-item"
+            ".skill-item, " +
+            ".facility-card"
         );
 
     const revealObserver =
@@ -402,10 +408,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
                     event.preventDefault();
 
-                    const navbarHeight =
+                    const navbarEl =
                         document.querySelector(
                             ".main-navbar"
-                        ).offsetHeight;
+                        );
+
+                    const navbarHeight =
+                        navbarEl ? navbarEl.offsetHeight : 80;
 
                     const targetPosition =
                         target.getBoundingClientRect().top +
